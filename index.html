@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DIP URJA CRMS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f59e0b;
+      --primary-dark: #d97706;
+      --secondary: #0f172a;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --whatsapp: #25d366;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding-bottom: 85px;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      padding: 16px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-top {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Container */
+    .container {
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      position: relative;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      border-radius: 14px 0 0 14px;
+      background: var(--primary);
+    }
+
+    .kpi-card.green::before { background: var(--accent); }
+    .kpi-card.blue::before { background: #3b82f6; }
+    .kpi-card.purple::before { background: #8b5cf6; }
+
+    .kpi-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .kpi-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-top: 4px;
+      color: var(--text-main);
+    }
+
+    /* Search & Filter */
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      outline: none;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .filter-chips::-webkit-scrollbar { display: none; }
+
+    .chip {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Customer / Lead Cards */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .record-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .record-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .status-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .badge-solar { background: #fef3c7; color: #b45309; }
+    .badge-ups { background: #e0f2fe; color: #0369a1; }
+    .badge-service { background: #dcfce7; color: #15803d; }
+    .badge-amc { background: #f3e8ff; color: #7e22ce; }
+
+    .record-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .record-notes {
+      font-size: 0.8rem;
+      background: #f8fafc;
+      padding: 8px 10px;
+      border-radius: 6px;
+      margin-top: 6px;
+      color: #475569;
+      border-left: 3px solid var(--border);
+    }
+
+    .action-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .btn-act {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-call {
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .btn-wa {
+      background: #ecfdf5;
+      color: #059669;
+    }
+
+    .btn-del {
+      background: #fef2f2;
+      color: #dc2626;
+      width: 38px;
+      flex: none;
+    }
+
+    /* Float Add Button */
+    .fab {
+      position: fixed;
+      right: 20px;
+      bottom: 95px;
+      background: var(--primary);
+      color: white;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+      border: none;
+      cursor: pointer;
+      z-index: 40;
+    }
+
+    /* Modal Form */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      align-items: flex-end;
+    }
+
+    .modal-sheet {
+      background: white;
+      width: 100%;
+      max-height: 88vh;
+      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 4px;
+      z-index: 50;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .nav-item.active {
+      color: var(--primary-dark);
+    }
+
+    .nav-icon {
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div>
+      <div class="brand-title">☀️ DIP URJA</div>
+      <div class="brand-sub">CRMS & Power Management</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-top" onclick="exportToCSV()">📤 Export</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Quick KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">Total Records</div>
+        <div class="kpi-val" id="kpi-total">0</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-title">Solar Enquiries</div>
+        <div class="kpi-val" id="kpi-solar">0</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-title">UPS / Battery</div>
+        <div class="kpi-val" id="kpi-ups">0</div>
+      </div>
+      <div class="kpi-card purple">
+        <div class="kpi-title">Pipeline Value</div>
+        <div class="kpi-val" id="kpi-val">₹0</div>
+      </div>
+    </div>
+
+    <!-- Search Box -->
+    <input type="text" id="search-input" class="search-box" placeholder="🔍 Search name, phone, city..." oninput="renderRecords()">
+
+    <!-- Filter Chips -->
+    <div class="filter-chips">
+      <button class="chip active" onclick="setCategoryFilter('ALL', this)">All</button>
+      <button class="chip" onclick="setCategoryFilter('Solar', this)">☀️ Solar</button>
+      <button class="chip" onclick="setCategoryFilter('Home/Lift UPS', this)">🔋 UPS</button>
+      <button class="chip" onclick="setCategoryFilter('Installation', this)">🔧 Installation</button>
+      <button class="chip" onclick="setCategoryFilter('Service', this)">🛠️ Service</button>
+      <button class="chip" onclick="setCategoryFilter('AMC', this)">📅 AMC</button>
+    </div>
+
+    <!-- Record List -->
+    <div class="card-list" id="record-list">
+      <!-- Records dynamically rendered here -->
+    </div>
+  </div>
+
+  <!-- Floating Add Button -->
+  <button class="fab" onclick="openAddModal()">+</button>
+
+  <!-- Add Record Modal Form -->
+  <div class="modal" id="addModal">
+    <div class="modal-sheet">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="font-size:1.1rem; font-weight:700;">Add New Record</h3>
+        <button onclick="closeAddModal()" style="border:none; background:none; font-size:1.4rem; cursor:pointer;">&times;</button>
+      </div>
+
+      <form id="recordForm" onsubmit="saveRecord(event)">
+        <div class="form-group">
+          <label>Category / Solution</label>
+          <select id="form-category" class="form-control" required>
+            <option value="Solar">☀️ Solar Rooftop / On-Grid / Off-Grid</option>
+            <option value="Home/Lift UPS">🔋 Home / Lift UPS & Battery</option>
+            <option value="Installation">🔧 Site Installation</option>
+            <option value="Service">🛠️ Service & Breakdown Repair</option>
+            <option value="AMC">📅 Annual Maintenance (AMC)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Customer Name</label>
+          <input type="text" id="form-name" class="form-control" placeholder="e.g. Ramesh Patil" required>
+        </div>
+
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="tel" id="form-mobile" class="form-control" placeholder="10-digit number" required>
+        </div>
+
+        <div class="form-group">
+          <label>City / Location</label>
+          <input type="text" id="form-city" class="form-control" placeholder="e.g. Nashik">
+        </div>
+
+        <div class="form-group">
+          <label>Capacity / Specs</label>
+          <input type="text" id="form-capacity" class="form-control" placeholder="e.g. 5kW On-Grid / 150Ah Tubular">
+        </div>
+
+        <div class="form-group">
+          <label>Quoted Amount (₹)</label>
+          <input type="number" id="form-amount" class="form-control" placeholder="e.g. 275000">
+        </div>
+
+        <div class="form-group">
+          <label>Status / Stage</label>
+          <select id="form-stage" class="form-control">
+            <option value="New Lead">🎯 New Lead</option>
+            <option value="Follow-up">📞 Follow-up Pending</option>
+            <option value="Quotation Sent">🧾 Quotation Sent</option>
+            <option value="Deal Won">✅ Deal Won / Advance Paid</option>
+            <option value="Completed">🎉 Work Completed</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Notes / Follow-up Details</label>
+          <textarea id="form-notes" class="form-control" rows="2" placeholder="Next step, subsidy inquiry, visit date..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">💾 Save Record</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button class="nav-item active" onclick="setNav('dashboard')">
+      <span class="nav-icon">📊</span>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-item" onclick="setNav('solar')">
+      <span class="nav-icon">☀️</span>
+      <span>Solar</span>
+    </button>
+    <button class="nav-item" onclick="setNav('ups')">
+      <span class="nav-icon">🔋</span>
+      <span>UPS</span>
+    </button>
+    <button class="nav-item" onclick="setNav('service')">
+      <span class="nav-icon">🛠️</span>
+      <span>Service/AMC</span>
+    </button>
+  </div>
+
+  <script>
+    // Storage Key
+    const STORAGE_KEY = 'dip_urja_crms_records';
+
+    // Default Seed Data
+    const initialRecords = [
+      { id: 1, name: "Mahesh Deshmukh", mobile: "9822011223", city: "Nashik Road", category: "Solar", capacity: "5kW On-Grid", amount: 260000, stage: "Quotation Sent", notes: "Subsidy application verified. Waiting for meter sanction." },
+      { id: 2, name: "Kishor Sonawane", mobile: "9423188990", city: "Indira Nagar", category: "Home/Lift UPS", capacity: "3.5 kVA / 4 Batteries", amount: 85000, stage: "Follow-up", notes: "Lift inverter inquiry. Callback on Saturday." },
+      { id: 3, name: "Gajanan Enterprises", mobile: "9823456712", city: "Ambad MIDC", category: "Service", capacity: "10kVA Online UPS", amount: 12000, stage: "New Lead", notes: "Battery backup dropping fast. Needs site inspection." }
+    ];
+
+    let records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || initialRecords;
+    let currentCategoryFilter = 'ALL';
+
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+      renderKPIs();
+      renderRecords();
+    }
+
+    function renderKPIs() {
+      document.getElementById('kpi-total').innerText = records.length;
+      document.getElementById('kpi-solar').innerText = records.filter(r => r.category === 'Solar').length;
+      document.getElementById('kpi-ups').innerText = records.filter(r => r.category === 'Home/Lift UPS').length;
+
+      const totalVal = records.reduce((sum, r) => sum + (Number(r.amount) || 0), 0);
+      document.getElementById('kpi-val').innerText = '₹' + totalVal.toLocaleString('en-IN');
+    }
+
+    function renderRecords() {
+      const listEl = document.getElementById('record-list');
+      const search = document.getElementById('search-input').value.toLowerCase();
+
+      listEl.innerHTML = '';
+
+      const filtered = records.filter(r => {
+        const matchesCategory = currentCategoryFilter === 'ALL' || r.category === currentCategoryFilter;
+        const matchesSearch = r.name.toLowerCase().includes(search) ||
+                              r.mobile.includes(search) ||
+                              (r.city && r.city.toLowerCase().includes(search)) ||
+                              (r.notes && r.notes.toLowerCase().includes(search));
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:0.85rem;">No matching records found.</div>`;
+        return;
+      }
+
+      filtered.forEach(r => {
+        const badgeClass = r.category === 'Solar' ? 'badge-solar' : (r.category === 'Home/Lift UPS' ? 'badge-ups' : 'badge-service');
+        const waMsg = encodeURIComponent(`Namaskar ${r.name} ji, regarding your ${r.category} inquiry with DIP URJA POWER SOLUTIONS.`);
+
+        const card = document.createElement('div');
+        card.className = 'record-card';
+        card.innerHTML = `
+          <div class="record-header">
+            <div>
+              <div class="record-name">${r.name}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">${r.city || 'Nashik'}</div>
+            </div>
+            <span class="status-badge ${badgeClass}">${r.category}</span>
+          </div>
+
+          <div class="record-meta">
+            <div><strong>Specs:</strong> ${r.capacity || 'Not specified'}</div>
+            <div><strong>Stage:</strong> ${r.stage} ${r.amount ? '• <strong>₹' + Number(r.amount).toLocaleString('en-IN') + '</strong>' : ''}</div>
+          </div>
+
+          ${r.notes ? `<div class="record-notes">${r.notes}</div>` : ''}
+
+          <div class="action-bar">
+            <a href="tel:${r.mobile}" class="btn-act btn-call">📞 Call</a>
+            <a href="https://wa.me/91${r.mobile}?text=${waMsg}" target="_blank" class="btn-act btn-wa">💬 WhatsApp</a>
+            <button onclick="deleteRecord(${r.id})" class="btn-act btn-del" title="Delete">🗑️</button>
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    function setCategoryFilter(cat, btn) {
+      currentCategoryFilter = cat;
+      document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderRecords();
+    }
+
+    function setNav(nav) {
+      if (nav === 'dashboard') setCategoryFilter('ALL');
+      if (nav === 'solar') setCategoryFilter('Solar');
+      if (nav === 'ups') setCategoryFilter('Home/Lift UPS');
+      if (nav === 'service') setCategoryFilter('Service');
+    }
+
+    function openAddModal() {
+      document.getElementById('addModal').style.display = 'flex';
+    }
+
+    function closeAddModal() {
+      document.getElementById('addModal').style.display = 'none';
+      document.getElementById('recordForm').reset();
+    }
+
+    function saveRecord(e) {
+      e.preventDefault();
+      const newRec = {
+        id: Date.now(),
+        name: document.getElementById('form-name').value.trim(),
+        mobile: document.getElementById('form-mobile').value.trim(),
+        city: document.getElementById('form-city').value.trim(),
+        category: document.getElementById('form-category').value,
+        capacity: document.getElementById('form-capacity').value.trim(),
+        amount: document.getElementById('form-amount').value,
+        stage: document.getElementById('form-stage').value,
+        notes: document.getElementById('form-notes').value.trim()
+      };
+
+      records.unshift(newRec);
+      saveToStorage();
+      closeAddModal();
+    }
+
+    function deleteRecord(id) {
+      if (confirm('Delete this record?')) {
+        records = records.filter(r => r.id !== id);
+        saveToStorage();
+      }
+    }
+
+    function exportToCSV() {
+      if (records.length === 0) return alert('No records to export');
+      const headers = ['ID', 'Name', 'Mobile', 'City', 'Category', 'Capacity', 'Amount', 'Stage', 'Notes'];
+      const rows = records.map(r => [
+        r.id,
+        `"${(r.name || '').replace(/"/g, '""')}"`,
+        `"${r.mobile || ''}"`,
+        `"${(r.city || '').replace(/"/g, '""')}"`,
+        `"${r.category || ''}"`,
+        `"${(r.capacity || '').replace(/"/g, '""')}"`,
+        r.amount || 0,
+        `"${r.stage || ''}"`,
+        `"${(r.notes || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `DIP_URJA_CRM_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Initialize
+    renderKPIs();
+    renderRecords();
+  </script>
+</body>
+</html>
